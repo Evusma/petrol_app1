@@ -1,0 +1,37 @@
+# how your Python project is built/packaged.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "streamlit_app"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+# Production dependencies
+dependencies = [
+    "streamlit>=1.32.0",
+    "plotly>=5.19.0",
+    "pandas>=2.2.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "psycopg[binary]>=3.2",
+]
+
+# Dev dependencies
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.3.0",
+    "mypy>=1.9.0",
+]
+
+# Source location (where your actual Python package is located)
+[tool.hatch.build.targets.wheel]
+packages = ["src/streamlit_app"]
+
+# pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

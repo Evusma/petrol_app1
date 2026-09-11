@@ -1,0 +1,39 @@
+{
+  "name": "Streamlit App Dev Container",
+  "build":{
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // local code mounted
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+
+  // installs package
+  //"postCreateCommand": "pip install -e '.[dev]'",
+
+  // Streamlit port
+  "forwardPorts": [8501], 
+
+  "customizations": {
+    "vscode":{
+      // auto-installed inside the container
+      "extensions":[
+          "ms-python.python",
+          "ms-python.vscode-pylance",
+          "ms-toolsai.jupyter",
+          "charliermarsh.ruff",
+          "eamodio.gitlens",
+          "ms-python.mypy-type-stubs"
+      ],
+      "settings":{
+	  "python.defaultInterpreterPath": "/usr/local/bin/python",
+          "[python]":{
+              "editor.defaultFormatter": "charliermarsh.ruff",
+              "editor.formatOnSave": true
+          }
+	}
+    }
+  },
+  "remoteUser": "vscode"
+}

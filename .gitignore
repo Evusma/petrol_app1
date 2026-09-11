@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+
+# Environment
+.env
+
+# Testing / coverage
+.pytest_cache/
+tests/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# IDEs
+.vscode/
+
