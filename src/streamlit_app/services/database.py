@@ -3,6 +3,7 @@ import psycopg
 import requests
 import os
 import logging
+import time
 
 from datetime import date
 from streamlit_app.config import config
@@ -31,27 +32,47 @@ def test_petrol():
         logger.error(e)
 
 
+def get_data(station, max_retries=5):
+    for attempt in range(max_retries):
+        try:
+            logger.info("API call attempt %d / %d", attempt, max_retries)
+            response = requests.get(url=config.url.format(station=station))
+            if response.status_code == 200:
+                return response
+            logger.error("Request failed with %d ", response.status_code)
+        except requests.RequestException as e:
+            logger.error("Request error %s", e)
+        if attempt < max_retries - 1:
+            delay = 2**attempt
+            logger.info("Retrying in %ds...", delay)
+            time.sleep(delay)
+    return None
+
+
 def insert_petrol(station):
     with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
         cursor.execute(config.create_table_petrol)
-        response = requests.get(url=config.url.format(station=station))
-        response = response.json()
+        response = get_data(station)
+        if response == None:
+            logger.error("No data for station %d for %s", station, today)
+        else:
+            response = response.json()
 
-        id_station = response.get("id")
-        brand = response.get("Brand").get("name")
-        name = response.get("name")
-        list_petrols = response.get("Fuels")
+            id_station = response.get("id")
+            brand = response.get("Brand").get("name")
+            name = response.get("name")
+            list_petrols = response.get("Fuels")
 
-        for petrol in list_petrols:
-            # id = 1 for the gazole
-            if petrol.get("id") == 1:
-                value = petrol.get("Price").get("value")
-                value_date = petrol.get("Update").get("value")
-                cursor.execute(
-                    config.insert_table_petrol,
-                    (id_station, brand, name, value, value_date, today.isoformat()),
-                )
-                logger.info("inserted station %d", station)
+            for petrol in list_petrols:
+                # id = 1 for the gazole
+                if petrol.get("id") == 1:
+                    value = petrol.get("Price").get("value")
+                    value_date = petrol.get("Update").get("value")
+                    cursor.execute(
+                        config.insert_table_petrol,
+                        (id_station, brand, name, value, value_date, today.isoformat()),
+                    )
+                    logger.info("inserted station %d", station)
 
 
 def select_all_petrol():
