@@ -32,7 +32,7 @@ def time_series_plot():
             "value": "Price (€ / L)",
             "name": "Station",
         },
-        title="Diesel price by station",
+        title="Diesel Price Trends by Station",
     )
 
     fig.update_traces(
@@ -55,8 +55,11 @@ def time_series_plot():
 
 
 def main():
-    st.title("Dashboard")
-    st.write("Diesel price evolution.")
+    st.title("Diesel price evolution")
+    st.write("""
+        Time-series dashboard to track the evolution of 
+        diesel prices at selected gas stations.
+    """)
 
     # plotly version (dynamic dahsboard)
     st.plotly_chart(time_series_plot(), width="stretch")
