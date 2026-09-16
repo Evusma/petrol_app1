@@ -8,6 +8,7 @@ from streamlit_app.config import config
 from streamlit_app.services import database
 
 
+@st.cache_data(ttl=600)
 def import_data():
     petrol_data = database.select_all_petrol()
     df = pd.DataFrame(petrol_data, columns=config.petrol_columns)

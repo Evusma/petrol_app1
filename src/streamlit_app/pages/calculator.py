@@ -5,6 +5,7 @@ from streamlit_app.config import config
 from streamlit_app.services import database
 
 
+@st.cache_data(ttl=600)
 def import_data():
     last_price = database.select_last_price_petrol()
     df = pd.DataFrame(last_price, columns=config.petrol_columns)

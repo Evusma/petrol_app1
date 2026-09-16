@@ -5,6 +5,7 @@ import os
 import logging
 import time
 
+from psycopg_pool import ConnectionPool
 from datetime import date
 from streamlit_app.config import config
 from dotenv import load_dotenv
@@ -18,11 +19,13 @@ DB_URL = os.environ["DB_URL"]
 
 today = date.today()
 
+pool = ConnectionPool(DB_URL, min_size=2, max_size=10)
+
 
 # TABLE PETROL
 def test_petrol():
     try:
-        with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+        with pool.connection() as conn, conn.cursor() as cursor:
             cursor.execute("SELECT * FROM petrol.petrol")
             rows = cursor.fetchall()
             logger.info("total rows: %d", len(rows))
@@ -50,7 +53,7 @@ def get_data(station, max_retries=5):
 
 
 def insert_petrol(station):
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute(config.create_table_petrol)
         response = get_data(station)
         if response == None:
@@ -76,14 +79,14 @@ def insert_petrol(station):
 
 
 def select_all_petrol():
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute("SELECT * FROM petrol.petrol")
         rows = cursor.fetchall()
         return rows
 
 
 def select_last_price_petrol():
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute("SELECT max(record_date) FROM petrol.petrol")
         rows = cursor.fetchall()
         last_record_date = rows[0]
@@ -98,7 +101,7 @@ def select_last_price_petrol():
 # TABLE CONTACT
 def test_contact():
     try:
-        with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+        with pool.connection() as conn, conn.cursor() as cursor:
             cursor.execute("SELECT * FROM cv.contact")
             rows = cursor.fetchall()
             logger.info("total rows: %d", len(rows))
@@ -109,7 +112,7 @@ def test_contact():
 
 
 def insert_contact(first_name, last_name, email, subject, message, linkedin):
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute(config.create_table_contact)
         cursor.execute(
             config.insert_table_contact,
@@ -127,24 +130,24 @@ def insert_contact(first_name, last_name, email, subject, message, linkedin):
 
 
 def select_all_contact():
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute("SELECT * FROM cv.contact")
         rows = cursor.fetchall()
         return rows
 
 
 def select_new_contact():
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute("SELECT * FROM cv.contact WHERE NOT message_saw")
         rows = cursor.fetchall()
         return rows
 
 
 def update_saw_contact(id):
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute("UPDATE cv.contact SET message_saw = TRUE WHERE id = %s", (id,))
 
 
 def drop_contact():
-    with psycopg.connect(DB_URL) as conn, conn.cursor() as cursor:
+    with pool.connection() as conn, conn.cursor() as cursor:
         cursor.execute("DROP TABLE cv.contact")
