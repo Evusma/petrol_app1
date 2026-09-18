@@ -3,6 +3,7 @@ stations = (
     94400005,
     94400004,
     94140004,
+    94110003,
 )
 url = "https://api.prix-carburants.2aaz.fr/station/{station}"
 
