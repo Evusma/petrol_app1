@@ -1,4 +1,3 @@
-# calls external API and insert data into DB
 import pandas as pd
 import logging
 
