@@ -124,7 +124,7 @@ streamlit run src/streamlit_app/app.py
 
 ## 🌐 Deployment
 
-This app is deployed on **[Streamlit Community Cloud](https://https://petrol-price-dashboard.streamlit.app/)**.
+This app is deployed on **[Streamlit Community Cloud](https://petrol-price-dashboard.streamlit.app/)**.
 
 ## 📬 Contact
 
