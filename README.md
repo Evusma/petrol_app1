@@ -34,7 +34,7 @@ The app is a **Streamlit** application with three pages:
 
 ## 🔄 Data Pipeline
 
-Data is sourced from the public [data.gouv.fr](https://https://www.data.gouv.fr/datasets/prix-des-carburants-en-france-flux-instantane-v2-amelioree) datagouv fuel prices API, which updates every 10 minutes. However, this app refreshes its own database **once a day**.
+Data is sourced from the public [data.gouv.fr](https://www.data.gouv.fr/datasets/prix-des-carburants-en-france-flux-instantane-v2-amelioree) datagouv fuel prices API, which updates every 10 minutes. However, this app refreshes its own database **once a day**.
 
 The pipeline works as follows:
 
