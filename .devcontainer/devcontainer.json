@@ -1,16 +1,13 @@
 {
   "name": "Streamlit App Dev Container",
-  "build":{
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
+  "image" : "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
 
   // local code mounted
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace",
 
   // installs package
-  //"postCreateCommand": "pip install -e '.[dev]'",
+  "postCreateCommand": "pip install -e '.[dev]'",
 
   // Streamlit port
   "forwardPorts": [8501], 
