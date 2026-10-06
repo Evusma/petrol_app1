@@ -49,7 +49,7 @@ data.gouv.fr API → update_db.py (GitHub Action, daily) → PostgreSQL → Stre
 
 ## ⚙️ Configuration
 
-By default, the dashboard tracks gas stations **near my home**. However, the app is easily customizable: simply edit the tuple of station IDs inside [`const.py`](const.py) to track whichever stations you're interested in.
+By default, the dashboard tracks gas stations **near my home**. However, the app is easily customizable: simply edit the tuple of station IDs inside [`const.py`](src/streamlit_app/config/const.py) to track whichever stations you're interested in.
 
 ```python
 # const.py (example)
