@@ -49,10 +49,10 @@ data.gouv.fr API → update_db.py (GitHub Action, daily) → PostgreSQL → Stre
 
 ## ⚙️ Configuration
 
-By default, the dashboard tracks gas stations **near my home**. However, the app is easily customizable: simply edit the tuple of station IDs inside [`config.py`](config.py) to track whichever stations you're interested in.
+By default, the dashboard tracks gas stations **near my home**. However, the app is easily customizable: simply edit the tuple of station IDs inside [`const.py`](const.py) to track whichever stations you're interested in.
 
 ```python
-# config.py (example)
+# const.py (example)
 STATION_IDS = (
     "12345678",  # Station name/location
     "87654321",
@@ -62,7 +62,6 @@ STATION_IDS = (
 
 ## 📁 Project Structure
 
-> ⚠️ *Placeholder — to be finalized.*
 
 ```
 diesel-dashboard/
@@ -76,13 +75,15 @@ diesel-dashboard/
 │       │   ├── dashboard.py
 │       │   └── details.py
 │       ├── config/
-│       │   └── config.py
+│       │   └── const.py
 │       └── services/
+│           │── sql.py
 │           └── database.py
 ├── scripts/
 │   ├── update_db.py
 │   └── contact_info.py
-├── config.py
+│
+├── .gitignore
 ├── pyproject.toml
 ├── .env
 └── README.md

@@ -7,7 +7,8 @@ import time
 
 from psycopg_pool import ConnectionPool
 from datetime import date
-from streamlit_app.config import config
+from streamlit_app.config import const
+from streamlit_app.services import sql
 from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
@@ -39,7 +40,7 @@ def get_data(station, max_retries=5):
     for attempt in range(max_retries):
         try:
             logger.info("API call attempt %d / %d", attempt, max_retries)
-            response = requests.get(url=config.url.format(station=station))
+            response = requests.get(url=const.URL.format(station=station))
             if response.status_code == 200:
                 return response
             logger.error("Request failed with %d ", response.status_code)
@@ -54,7 +55,7 @@ def get_data(station, max_retries=5):
 
 def insert_petrol(station):
     with pool.connection() as conn, conn.cursor() as cursor:
-        cursor.execute(config.create_table_petrol)
+        cursor.execute(sql.CREATE_TABLE_PETROL)
         response = get_data(station)
         if response == None:
             logger.error("No data for station %d for %s", station, today)
@@ -72,7 +73,7 @@ def insert_petrol(station):
                     value = petrol.get("Price").get("value")
                     value_date = petrol.get("Update").get("value")
                     cursor.execute(
-                        config.insert_table_petrol,
+                        sql.INSERT_TABLE_PETROL,
                         (id_station, brand, name, value, value_date, today.isoformat()),
                     )
                     logger.info("inserted station %d", station)
@@ -113,9 +114,9 @@ def test_contact():
 
 def insert_contact(first_name, last_name, email, subject, message, linkedin):
     with pool.connection() as conn, conn.cursor() as cursor:
-        cursor.execute(config.create_table_contact)
+        cursor.execute(sql.CREATE_TABLE_CONTACT)
         cursor.execute(
-            config.insert_table_contact,
+            sql.INSERT_TABLE_CONTACT,
             (
                 first_name,
                 last_name,

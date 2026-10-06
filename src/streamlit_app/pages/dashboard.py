@@ -4,14 +4,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from streamlit_app.config import config
+from streamlit_app.config import const
 from streamlit_app.services import database
 
 
 @st.cache_data(ttl=600)
 def import_data():
     petrol_data = database.select_all_petrol()
-    df = pd.DataFrame(petrol_data, columns=config.petrol_columns)
+    df = pd.DataFrame(petrol_data, columns=const.PETROL_COLUMNS)
     df["record_date"] = pd.to_datetime(df["record_date"])
     return df
 

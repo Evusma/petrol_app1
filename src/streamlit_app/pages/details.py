@@ -13,7 +13,7 @@ def social_media_links():
 
 def contact_form():
     with st.form("contact_form"):
-        first_name = st.text_input("First name *", max_chars=50)
+        first_name = st.text_input("First name", max_chars=50)
         last_name = st.text_input("Last name", max_chars=50)
         email = st.text_input("Email *")
         subject = st.text_input("Subject", max_chars=100)
@@ -23,7 +23,7 @@ def contact_form():
         submitted = st.form_submit_button("Send")
 
         if submitted:
-            if not first_name or not email or not message:
+            if not email or not message:
                 st.error("Please fill in all required fields.")
             else:
                 database.insert_contact(

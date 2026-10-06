@@ -1,23 +1,4 @@
-stations = (
-    94400003,
-    94400005,
-    94400004,
-    94140004,
-    94110003,
-)
-url = "https://api.prix-carburants.2aaz.fr/station/{station}"
-
-petrol_columns = [
-    "id",
-    "id_station",
-    "brand",
-    "name",
-    "value",
-    "value_date",
-    "record_date",
-]
-
-create_table_petrol = """
+CREATE_TABLE_PETROL = """
     CREATE TABLE IF NOT EXISTS petrol.petrol (
         id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
         id_station INTEGER NOT NULL,
@@ -30,7 +11,7 @@ create_table_petrol = """
     )
 """
 
-insert_table_petrol = """
+INSERT_TABLE_PETROL = """
     INSERT INTO petrol.petrol (
         id_station,
         brand,
@@ -43,19 +24,7 @@ insert_table_petrol = """
     ON CONFLICT DO NOTHING
 """
 
-contact_columns = [
-    "id",
-    "first_name",
-    "last_name",
-    "email",
-    "subject",
-    "message",
-    "linkedin",
-    "record_date",
-    "message_saw",
-]
-
-create_table_contact = """
+CREATE_TABLE_CONTACT = """
     CREATE TABLE IF NOT EXISTS cv.contact (
         id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
         first_name TEXT NOT NULL,
@@ -70,7 +39,7 @@ create_table_contact = """
     )
 """
 
-insert_table_contact = """
+INSERT_TABLE_CONTACT = """
     INSERT INTO cv.contact (
         first_name,
         last_name,

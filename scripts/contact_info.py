@@ -1,7 +1,7 @@
 import pandas as pd
 import logging
 
-from streamlit_app.config import config
+from streamlit_app.config import const
 from streamlit_app.services import database
 
 logging.basicConfig(level=logging.INFO)
@@ -10,14 +10,14 @@ logger = logging.getLogger(__name__)
 
 def import_data():
     contacts = database.select_all_contact()
-    df = pd.DataFrame(contacts, columns=config.contact_columns)
+    df = pd.DataFrame(contacts, columns=const.CONTACT_COLUMNS)
     df["record_date"] = pd.to_datetime(df["record_date"])
     return df
 
 
 def import_new_data():
     contacts = database.select_new_contact()
-    df = pd.DataFrame(contacts, columns=config.contact_columns)
+    df = pd.DataFrame(contacts, columns=const.CONTACT_COLUMNS)
     df["record_date"] = pd.to_datetime(df["record_date"])
     return df
 
